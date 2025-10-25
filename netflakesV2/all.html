@@ -73,7 +73,7 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-       <div class="mobile-menu-links">
+        <div class="mobile-menu-links">
             <a href="index.html" class="mobile-nav-link">
                 <i class="fas fa-home"></i>
                 <span>Home</span>
@@ -95,7 +95,7 @@
                 <span>Genres</span>
             </a>
         </div>
-        </div>
+    </div>
 
     <div class="content-wrapper page-top">
         <section class="content-row">
@@ -106,6 +106,7 @@
 
             <div id="genre-filter-bar-container" class="genre-filter-bar">
                 </div>
+
             <div id="all-results-grid" class="search-results">
                 </div>
 
@@ -127,16 +128,139 @@
 
         </section>
     </div> <div class="modal" id="modal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-container" id="modal-container">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content">
+                <div class="modal-player-area">
+                    <img id="modal-backdrop-image" class="modal-backdrop-image" src="" alt="Backdrop">
+                    <div class="video-container">
+                        <iframe id="modal-video" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="modal-details-area">
+                    <div class="modal-details-layout">
+                        <div class="modal-poster-col">
+                            <div class="modal-poster">
+                                <img id="modal-image" src="" alt="Poster" />
+                            </div>
+                        </div>
+                        <div class="modal-info-col">
+                            <div class="modal-title-header">
+                                <h2 id="modal-title" class="modal-title"></h2>
+                            </div>
+                            <div class="modal-meta">
+                                <div class="rating-container">
+                                    <i class="fas fa-star"></i>
+                                    <span id="modal-rating" class="rating-text"></span>
+                                </div>
+                                <span id="modal-year" class="year-text"></span>
+                                <span id="modal-type" class="type-badge"></span>
+                            </div>
+                            <div class="modal-genres" id="modal-genres"></div>
+
+                            <div class="modal-playback-controls" id="playback-controls">
+                                <div class="server-controls" id="server-controls">
+                                    <label for="server" class="server-label">
+                                        <i class="fas fa-server"></i> Server:
+                                    </label>
+                                    <select id="server" class="server-select">
+                                        <option value="vidsrc.cc">Server 1</option>
+                                        <option value="vidsrc.me">Server 2</option>
+                                        <option value="player.videasy.net">Server 3</option>
+                                    </select>
+                                </div>
+
+                                <div class="modal-tv-controls" id="modal-tv-controls">
+                                    <div class="tv-season-selector">
+                                        <label for="season-select" class="tv-select-label">Season:</label>
+                                        <select id="season-select" class="tv-select"></select>
+                                    </div>
+
+                                    <div class="tv-episode-list">
+                                        <h4 class="episodes-heading">Episodes</h4>
+                                        <div id="episode-list" class="episode-list-items">
+                                            <div class="episode-list-placeholder">Select a season to view episodes.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="modal-description" class="modal-description"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
     <div class="search-modal" id="search-modal">
+        <div class="search-modal-content">
+            <button class="search-close" onclick="closeSearchModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-header">
+                <div class="search-input-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        class="search-input"
+                        placeholder="Search for movies, TV shows, or anime..." 
+                        oninput="searchTMDB()" 
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+            <div class="search-results-container">
+                <div id="search-results" class="search-results"></div>
+                <div id="search-loading" class="search-loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Searching...</p>
+                </div>
+                <div id="search-empty" class="search-empty" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <p>No results found</p>
+                </div>
+            </div>
         </div>
+    </div>
 
     <footer class="footer">
-        </footer>
+        <div class="footer-content">
+            <div class="footer-section"> <h3 class="footer-logo">NETFLAKES</h3>
+                <p class="footer-description">Your ultimate destination for movies, TV shows, and anime streaming.</p>
+            </div>
+            
+            <div class="footer-section"> <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a href="all.html?type=movie"><i class="fas fa-film"></i> Movies</a>
+                    <a href="all.html?type=tv"><i class="fas fa-tv"></i> TV Shows</a>
+                    <a href="all.html?type=anime"><i class="fas fa-dragon"></i> Anime</a>
+                </div>
+            </div>
+
+            <div class="footer-section"> <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="footer-copyright">&copy; 2025 NetFlakes. All rights reserved.</p>
+            <p class="footer-disclaimer">This site does not store any files on its server. All contents are provided by non-affiliated third parties.</p>
+        </div>
+    </footer>
 
     <div class="loading-screen" id="loading-screen">
         <div class="loading-spinner"></div>
     </div>
+    
 </body>
 </html>
