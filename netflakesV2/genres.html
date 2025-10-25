@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>NetFlakes - Browse by Genre</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="preload" href="css/home.css" as="style">
+    <link rel="preload" href="js/home.js" as="script">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script defer src="js/home.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <span class="logo-text">NETFLAKES</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <!-- <a href="#movies" class="nav-link">
+                    <i class="fas fa-film"></i>
+                    <span>Movies</span>
+                </a>
+                <a href="#tvshows" class="nav-link">
+                    <i class="fas fa-tv"></i>
+                    <span>TV Shows</span>
+                </a>
+                <a href="#anime" class="nav-link">
+                    <i class="fas fa-dragon"></i>
+                    <span>Anime</span>
+                </a>
+                </div> -->
+            
+            <div class="search-container" id="search-container">
+                <button class="search-btn" id="search-btn-trigger">
+                    <i class="fas fa-search" id="search-btn-icon"></i>
+                </button>
+                <input 
+                    type="text" 
+                    id="inline-search-input" 
+                    class="inline-search-input" 
+                    placeholder="Search..." 
+                    oninput="searchTMDB_Inline()" 
+                    autocomplete="off"
+                />
+                <div id="inline-search-results" class="inline-search-results"></div>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <span class="logo-text">Menu</span>
+            <button class="close-mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="index.html" class="mobile-nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <!-- <a href="#movies" class="mobile-nav-link">
+                <i class="fas fa-film"></i>
+                <span>Movies</span>
+            </a>
+            <a href="#tvshows" class="mobile-nav-link">
+                <i class="fas fa-tv"></i>
+                <span>TV Shows</span>
+            </a>
+            <a href="#anime" class="mobile-nav-link">
+                <i class="fas fa-dragon"></i>
+                <span>Anime</span>
+            </a> -->
+        </div>
+    </div>
+
+    <div class="content-wrapper page-top">
+        
+        <section class="content-row">
+            <div class="row-header">
+                <h2 class="row-title">Movie Genres</h2>
+            </div>
+            <div class="genre-grid">
+                <a href="all.html?type=movie&genre=28" class="genre-card">Action</a>
+                <a href="all.html?type=movie&genre=12" class="genre-card">Adventure</a>
+                <a href="all.html?type=movie&genre=16" class="genre-card">Animation</a>
+                <a href="all.html?type=movie&genre=35" class="genre-card">Comedy</a>
+                <a href="all.html?type=movie&genre=80" class="genre-card">Crime</a>
+                <a href="all.html?type=movie&genre=99" class="genre-card">Documentary</a>
+                <a href="all.html?type=movie&genre=18" class="genre-card">Drama</a>
+                <a href="all.html?type=movie&genre=10751" class="genre-card">Family</a>
+                <a href="all.html?type=movie&genre=14" class="genre-card">Fantasy</a>
+                <a href="all.html?type=movie&genre=36" class="genre-card">History</a>
+                <a href="all.html?type=movie&genre=27" class="genre-card">Horror</a>
+                <a href="all.html?type=movie&genre=10402" class="genre-card">Music</a>
+                <a href="all.html?type=movie&genre=9648" class="genre-card">Mystery</a>
+                <a href="all.html?type=movie&genre=10749" class="genre-card">Romance</a>
+                <a href="all.html?type=movie&genre=878" class="genre-card">Science Fiction</a>
+                <a href="all.html?type=movie&genre=10770" class="genre-card">TV Movie</a>
+                <a href="all.html?type=movie&genre=53" class="genre-card">Thriller</a>
+                <a href="all.html?type=movie&genre=10752" class="genre-card">War</a>
+                <a href="all.html?type=movie&genre=37" class="genre-card">Western</a>
+            </div>
+        </section>
+
+        <section class="content-row">
+            <div class="row-header">
+                <h2 class="row-title">TV Show Genres</h2>
+            </div>
+            <div class="genre-grid">
+                <a href="all.html?type=tv&genre=10759" class="genre-card">Action & Adventure</a>
+                <a href="all.html?type=tv&genre=16" class="genre-card">Animation</a>
+                <a href="all.html?type=tv&genre=35" class="genre-card">Comedy</a>
+                <a href="all.html?type=tv&genre=80" class="genre-card">Crime</a>
+                <a href="all.html?type=tv&genre=99" class="genre-card">Documentary</a>
+                <a href="all.html?type=tv&genre=18" class="genre-card">Drama</a>
+                <a href="all.html?type=tv&genre=10751" class="genre-card">Family</a>
+                <a href="all.html?type=tv&genre=10762" class="genre-card">Kids</a>
+                <a href="all.html?type=tv&genre=9648" class="genre-card">Mystery</a>
+                <a href="all.html?type=tv&genre=10763" class="genre-card">News</a>
+                <a href="all.html?type=tv&genre=10764" class="genre-card">Reality</a>
+                <a href="all.html?type=tv&genre=10765" class="genre-card">Sci-Fi & Fantasy</a>
+                <a href="all.html?type=tv&genre=10766" class="genre-card">Soap</a>
+                <a href="all.html?type=tv&genre=10767" class="genre-card">Talk</a>
+                <a href="all.html?type=tv&genre=10768" class="genre-card">War & Politics</a>
+                <a href="all.html?type=tv&genre=37" class="genre-card">Western</a>
+            </div>
+        </section>
+
+    </div> <div class="modal" id="modal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-container" id="modal-container">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content">
+                <div class="modal-player-area">
+                    <img id="modal-backdrop-image" class="modal-backdrop-image" src="" alt="Backdrop">
+                    <div class="video-container">
+            _**[...truncated for brevity...]**_
+                    </div>
+                </div>
+                <div class="modal-details-area">
+                  _**[...truncated for brevity...]**_
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-content">
+            <button class="search-close" onclick="closeSearchModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-header">
+               _**[...truncated for brevity...]**_
+            </div>
+            <div class="search-results-container">
+               _**[...truncated for brevity...]**_
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+           _**[...truncated for brevity...]**_
+        </div>
+        <div class="footer-bottom">
+           _**[...truncated for brevity...]**_
+        </div>
+    </footer>
+
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-spinner"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>NetFlakes - Results</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="preload" href="css/home.css" as="style">
+    <link rel="preload" href="js/home.js" as="script">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script defer src="js/home.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <span class="logo-text">NETFLAKES</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="all.html?type=movie" class="nav-link">
+                    <i class="fas fa-film"></i>
+                    <span>Movies</span>
+                </a>
+                <a href="all.html?type=tv" class="nav-link">
+                    <i class="fas fa-tv"></i>
+                    <span>TV Shows</span>
+                </a>
+                <a href="all.html?type=anime" class="nav-link">
+                    <i class="fas fa-dragon"></i>
+                    <span>Anime</span>
+                </a>
+                <a href="all.html?type=movie" class="nav-link"> <i class="fas fa-grip-horizontal"></i>
+                    <span>Genres</span>
+                </a>
+            </div>
+            
+            <div class="search-container" id="search-container">
+                <button class="search-btn" id="search-btn-trigger">
+                    <i class="fas fa-search" id="search-btn-icon"></i>
+                </button>
+                <input 
+                    type="text" 
+                    id="inline-search-input" 
+                    class="inline-search-input" 
+                    placeholder="Search..." 
+                    oninput="searchTMDB_Inline()" 
+                    autocomplete="off"
+                />
+                <div id="inline-search-results" class="inline-search-results"></div>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <span class="logo-text">Menu</span>
+            <button class="close-mobile-menu" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+       <div class="mobile-menu-links">
+            <a href="index.html" class="mobile-nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="all.html?type=movie" class="mobile-nav-link">
+                <i class="fas fa-film"></i>
+                <span>Movies</span>
+            </a>
+            <a href="all.html?type=tv" class="mobile-nav-link">
+                <i class="fas fa-tv"></i>
+                <span>TV Shows</span>
+            </a>
+            <a href="all.html?type=anime" class="mobile-nav-link">
+                <i class="fas fa-dragon"></i>
+                <span>Anime</span>
+            </a>
+            <a href="all.html?type=movie" class="mobile-nav-link">
+                <i class="fas fa-grip-horizontal"></i>
+                <span>Genres</span>
+            </a>
+        </div>
+        </div>
+
+    <div class="content-wrapper page-top">
+        <section class="content-row">
+            
+            <div class="row-header">
+                <h2 class="row-title" id="all-page-title">Loading...</h2>
+            </div>
+
+            <div id="genre-filter-bar-container" class="genre-filter-bar">
+                </div>
+            <div id="all-results-grid" class="search-results">
+                </div>
+
+            <div id="all-loading" class="search-loading" style="display: none; padding: 60px 0;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading results...</p>
+            </div>
+            <div id="all-empty" class="search-empty" style="display: none; padding: 60px 0;">
+                <i class="fas fa-film"></i>
+                <p>No results found for this category.</p>
+            </div>
+
+            <div class="load-more-container" style="text-align: center; margin-top: 40px;">
+                <button id="load-more-btn" class="btn btn-primary" style="display: none;">
+                    <i class="fas fa-plus"></i>
+                    Load More
+                </button>
+            </div>
+
+        </section>
+    </div> <div class="modal" id="modal">
+        </div>
+
+    <div class="search-modal" id="search-modal">
+        </div>
+
+    <footer class="footer">
+        </footer>
+
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-spinner"></div>
+    </div>
+</body>
+</html>

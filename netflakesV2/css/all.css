@@ -1,0 +1,1297 @@
+:root {
+  --primary-color: #ff6347; /* Tomato */
+  --primary-color-rgb: 255, 99, 71; /* RGB version for transparency */
+  --secondary-color: #e64a2e; /* Darker Tomato */
+  --dark-bg: #101010; /* Near Black */
+  --card-bg: #1a1a1a; /* Dark Gray */
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  --border-radius: 10px;
+  --transition: all 0.3s ease;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --gradient-overlay: linear-gradient(to top, rgba(16, 16, 16, 1) 0%, rgba(16, 16, 16, 0) 100%);
+}
+
+/* ==================== RESET & BASE ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--dark-bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* ==================== LOADING SCREEN (Updated Style) ==================== */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--dark-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.loading-screen.hidden { opacity: 0; visibility: hidden; }
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 99, 71, 0.2);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ==================== NAVIGATION BAR (Top Nav) ==================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+  padding: 20px 0;
+  z-index: 1000;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+.navbar.scrolled {
+  background: rgba(26, 26, 26, 0.8); /* card-bg + opacity */
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo { display: flex; align-items: center; }
+.logo-text {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  position: relative;
+}
+/* Glowing underline effect sa logo */
+.logo-text::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.logo:hover .logo-text::after {
+  transform: scaleX(1);
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  transition: var(--transition);
+  position: relative;
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.active {
+  color: var(--primary-color);
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255, 99, 71, 0.5); /* GLOW EFFECT */
+}
+
+/* ==================== INLINE SEARCH BAR STYLES ==================== */
+
+/* Itatago natin ang inline input sa mobile */
+@media (max-width: 768px) {
+  .inline-search-input {
+   display: none !important;
+  }
+}
+
+/* Container para sa search at mobile-menu */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative; /* Kailangan para sa results dropdown */
+}
+
+.search-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 18px;
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+.search-btn:hover {
+  color: var(--primary-color);
+  background: rgba(255, 99, 71, 0.1);
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 20px;
+  padding: 8px 12px;
+}
+.mobile-menu-btn:hover { color: var(--primary-color); }
+
+/* Ang search bar mismo */
+.inline-search-input {
+  width: 0;
+  opacity: 0;
+  padding: 8px 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  transform: translateX(10px); /* Mag-uumpisa sa kanan */
+}
+
+/* "Effect" kapag pinindot (active class) */
+.search-container.active .inline-search-input {
+  width: 240px; /* Lapad ng search bar pag-active */
+  opacity: 1;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 2px solid var(--primary-color);
+  transform: translateX(0);
+}
+
+/* Ayusin ang pwesto at kulay ng icon pag-active */
+.search-container.active .search-btn {
+  color: var(--primary-color);
+}
+
+/* Dropdown para sa search results */
+#inline-search-results {
+  display: none; /* Tago by default */
+  position: absolute;
+  top: calc(100% + 15px); /* Sa ilalim ng navbar */
+  right: 0;
+  width: 350px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#inline-search-results.visible {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Style ng bawat item sa dropdown */
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.search-result-item:hover {
+  background: rgba(255, 99, 71, 0.1); /* 'Ignite' theme hover */
+}
+.search-result-item:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.search-result-item img {
+  width: 45px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.search-result-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+.search-result-info p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Loading/Empty state sa dropdown */
+.inline-search-results-feedback {
+  padding: 15px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ==================== MOBILE MENU (Re-styled) ==================== */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100%;
+  background: var(--card-bg);
+  z-index: 2000;
+  transition: right 0.3s ease;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mobile-menu.active { right: 0; }
+.mobile-menu-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mobile-menu-header .logo-text { color: var(--primary-color); }
+.close-mobile-menu { background: transparent; color: var(--text-primary); font-size: 24px; padding: 5px; }
+.mobile-menu-links { padding: 20px 0; }
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+.mobile-nav-link:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); }
+.mobile-nav-link.active { background: rgba(255, 99, 71, 0.1); color: var(--primary-color); }
+.mobile-nav-link i { width: 20px; font-size: 18px; }
+
+/* ==================== HERO BANNER (Re-styled) ==================== */
+.hero-banner {
+  position: relative;
+  height: 80vh;
+  min-height: 500px;
+  background-size: cover;
+  background-position: center 20%;
+  display: flex;
+  align-items: flex-end;
+  /* May margin-top para sa transparent navbar */
+  margin-top: -80px; /* Pulls it up behind the navbar */
+}
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 16, 16, 0.4) 0%,
+    rgba(16, 16, 16, 0.8) 70%,
+    rgba(16, 16, 16, 1) 100%
+  );
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+  width: 100%;
+}
+.hero-title {
+  font-size: 56px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+  max-width: 700px;
+  /* BAGONG STYLE: para maging container ng logo */
+  min-height: 50px; /* Adjust based on your logo size preference */
+}
+
+/* BAGONG STYLE: para sa logo image sa hero banner */
+.hero-title-logo {
+  max-height: 150px; /* Adjust as needed */
+  max-width: 80%;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 10px;
+  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.7));
+}
+
+/* BAGONG STYLE: itago ang text kung may logo */
+.hero-title.has-logo {
+  font-size: 0;
+  line-height: 0;
+}
+
+.hero-description {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  max-width: 600px;
+  line-height: 1.6;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+}
+.hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+
+/* ==================== BUTTONS (Re-styled) ==================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 30px;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  font-weight: 700;
+  transition: var(--transition);
+}
+.btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255, 99, 71, 0.3); /* GLOW EFFECT */
+}
+.btn-primary:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(255, 99, 71, 0.5); /* Mas malakas na glow */
+}
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(to top, var(--dark-bg) 0%, transparent 100%);
+}
+
+/* ==================== CONTENT WRAPPER ==================== */
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+.content-row {
+  margin-bottom: 50px;
+}
+
+/* === SCROLL FADE-IN EFFECT === */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.row-title {
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+/* Bagong accent sa title */
+.row-title::before {
+  content: '';
+  width: 5px;
+  height: 26px;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+.view-all {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.view-all:hover { color: var(--primary-color); }
+
+/* ==================== CAROUSEL (Re-styled) ==================== */
+.carousel-container { position: relative; }
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(5px);
+  color: var(--text-primary);
+  width: 45px;
+  height: 55px; /* Ginawang rounded rectangle */
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  z-index: 10;
+  transition: var(--transition);
+  opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.carousel-container:hover .carousel-btn { opacity: 1; }
+.carousel-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+  transform: translateY(-50%) scale(1.1);
+}
+.carousel-btn.prev { left: -22px; }
+.carousel-btn.next { right: -22px; }
+
+.media-list {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.media-list::-webkit-scrollbar { display: none; }
+
+/* === 3D TILT EFFECT SA CARD === */
+.media-card {
+  flex-shrink: 0;
+  width: 200px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  position: relative;
+  background: var(--card-bg);
+  
+  /* Para sa 3D Tilt */
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.1s ease; /* Mabilis na transition para sa tilt */
+}
+.media-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+/* Bagong overlay on hover */
+.media-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 15px 15px;
+  background: linear-gradient(to top, rgba(16, 16, 16, 0.95) 20%, transparent 100%);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: var(--transition);
+}
+.media-card:hover .media-card-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+.media-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.media-card-rating {
+  font-size: 13px;
+  color: #ffd700;
+  font-weight: 600;
+}
+.media-card-rating i { font-size: 12px; }
+
+/* ==================== MODAL (Re-styled) ==================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+.modal.active { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+}
+.modal-container {
+  position: relative;
+  z-index: 3001;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  max-width: 1000px; 
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  animation: slideUp 0.4s ease;
+  border-top: 3px solid var(--primary-color); /* Bagong Accent */
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: var(--transition);
+}
+.modal-close:hover { background: var(--primary-color); transform: rotate(90deg); }
+.modal-content { padding: 0; overflow: hidden; }
+.modal-player-area {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+}
+.modal-backdrop-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
+  z-index: 1;
+}
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 2;
+}
+.video-container iframe { width: 100%; height: 100%; border: none; }
+.modal-details-area { padding: 30px; }
+.modal-details-layout { display: flex; gap: 30px; }
+.modal-poster-col { flex-shrink: 0; width: 250px; }
+.modal-poster img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+.modal-info-col { flex: 1; min-width: 0; }
+.modal-title-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.modal-title {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 0;
+  flex: 1 1 300px;
+  padding-right: 20px;
+  /* BAGONG STYLE: para maging container ng logo */
+  min-height: 50px;
+}
+/* BAGONG STYLE: para sa mismong logo image sa modal */
+.modal-title-logo {
+  max-height: 80px;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin-bottom: -15px;
+}
+
+.modal-meta {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.rating-container { display: flex; align-items: center; gap: 5px; color: #ffd700; }
+.rating-text { font-weight: 700; }
+.year-text,
+.type-badge { color: var(--text-secondary); font-size: 14px; font-weight: 600; }
+.type-badge {
+  padding: 4px 12px;
+  background: rgba(255, 99, 71, 0.1);
+  border-radius: 20px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+.modal-description { color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
+.modal-genres { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.genre-tag {
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+
+/* ================================================= */
+/* ===    UPDATED CONTROL STYLES (v2 w/ List)    === */
+/* ================================================= */
+
+/* Ang main wrapper para sa controls */
+.modal-playback-controls {
+  background: rgba(255, 255, 255, 0.03); /* Slight background */
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-top: 20px; /* Space mula sa genres */
+  margin-bottom: 25px; /* Space bago ang description */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Hindi na flex dito, para mag-stack ang server at tv controls */
+}
+
+/* Server Controls - Laging nasa taas */
+.server-controls {
+   margin: 0;
+   padding: 0 0 15px 0; /* Space sa ilalim bago ang TV controls */
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Separator */
+   margin-bottom: 15px; /* Space pagkatapos ng separator */
+}
+.server-label { flex-shrink: 0; display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--text-secondary); font-size: 14px; }
+.server-select { flex-grow: 1; max-width: 250px; } /* Limitahan ang lapad */
+
+
+/* Container para sa TV Controls (Season + Episode List) */
+.modal-tv-controls {
+   margin: 0;
+   padding: 0;
+   border: none;
+   display: none; /* Tago by default */
+   /* Pwedeng gawing flex kung gusto mong mag-side by side sa wide screens */
+   /* display: flex; gap: 20px; */
+}
+
+/* Season Selector Area */
+.tv-season-selector {
+   margin-bottom: 15px; /* Space bago ang episode list */
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+.tv-season-selector .tv-select-label { flex-shrink: 0;}
+#season-select { max-width: 250px; flex-grow: 1;} /* Limitahan din ang lapad */
+
+/* Episode List Area */
+.tv-episode-list {} /* Wrapper */
+
+.episodes-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ang container ng mismong listahan */
+.episode-list-items {
+  max-height: 250px; /* Limitahan ang taas para magka-scrollbar */
+  overflow-y: auto;
+  padding-right: 5px; /* Space para sa scrollbar */
+}
+.episode-list-placeholder {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+
+/* Styling ng bawat Episode Item */
+.episode-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 5px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle separator */
+}
+.episode-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.episode-item.active {
+  background-color: rgba(var(--primary-color-rgb, 255, 99, 71), 0.15); /* Gamitin ang primary color */
+  border-left: 3px solid var(--primary-color);
+  padding-left: 8px;
+}
+
+.ep-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  width: 30px; /* Fixed width */
+  text-align: center;
+  flex-shrink: 0;
+}
+.episode-item.active .ep-number {
+    color: var(--primary-color);
+}
+
+.ep-thumbnail {
+  width: 100px; /* Fixed width for thumbnail */
+  height: 56px; /* 16:9 aspect ratio */
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background-color: #333; /* Placeholder color */
+}
+
+.ep-info {
+  flex-grow: 1; /* Para umokupa ng natitirang space */
+  min-width: 0; /* Para gumana ang text-overflow */
+}
+
+.ep-title {
+  display: block; /* Para gumana ang text-overflow */
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+ .episode-item.active .ep-title {
+    font-weight: 700;
+ }
+
+.ep-duration {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.ep-play-icon {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-left: auto; /* Push icon to the right */
+  padding: 0 10px;
+  opacity: 0; /* Tago by default */
+  transition: opacity 0.2s ease;
+}
+.episode-item:hover .ep-play-icon,
+.episode-item.active .ep-play-icon {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
+
+/* --- VISIBILITY LOGIC --- */
+
+/* Itago ang TV controls section by default */
+.modal-tv-controls {
+    display: none;
+}
+
+/* Ipakita ang TV controls kapag .is-tv ang modal */
+.modal-container.is-tv .modal-tv-controls {
+    display: block; /* O 'flex' kung gusto mong ayusin pa */
+}
+
+/* Ang Server controls (.server-controls) ay laging visible sa loob ng .modal-playback-controls */
+/* Hindi na kailangan ng specific rule para ipakita */
+
+
+/* ================================================= */
+/* ===       END OF UPDATED CONTROL STYLES       === */
+/* ================================================= */
+
+
+/* Shared styles for selects */
+.server-select, .tv-select {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  width: 100%; /* Make selects take full width of their group */
+}
+.server-select:hover, .server-select:focus,
+.tv-select:hover, .tv-select:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-color);
+}
+.tv-select-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+.tv-select { padding: 12px 15px; } /* Slightly larger padding for S/E */
+
+
+/* ==================== SEARCH MODAL (Mobile Only) ==================== */
+.search-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(16, 16, 16, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 4000;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.search-modal.active { display: block; }
+.search-modal-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 60px 40px;
+}
+.search-close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: var(--transition);
+  z-index: 10;
+}
+.search-close:hover { background: var(--primary-color); transform: rotate(90deg); }
+.search-header { max-width: 800px; margin: 0 auto 40px; }
+.search-input-container { position: relative; display: flex; align-items: center; }
+.search-icon {
+  position: absolute;
+  left: 20px;
+  color: var(--text-secondary);
+  font-size: 20px;
+}
+.search-input {
+  width: 100%;
+  padding: 18px 20px 18px 60px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  font-size: 18px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  transition: var(--transition);
+}
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.0);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 15px rgba(255, 99, 71, 0.3); /* GLOW EFFECT */
+}
+.search-input::placeholder { color: var(--text-secondary); }
+.search-results-container { max-width: 1400px; margin: 0 auto; }
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+.search-results .media-card { width: 100%; }
+.search-results .media-card img { height: 270px; }
+.search-loading,
+.search-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+.search-loading i {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+.search-empty i { font-size: 64px; margin-bottom: 20px; opacity: 0.5; }
+
+/* ==================== FOOTER (Bagong Redesign) ==================== */
+.footer {
+  background: var(--card-bg); 
+  padding: 60px 40px 0; 
+  border-top: 2px solid var(--primary-color); 
+  margin-top: 60px;
+}
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex; /* Pinalitan mula sa grid */
+  justify-content: space-between; /* Para paghiwalayin ang 2 sections */
+  align-items: flex-start;
+  flex-wrap: wrap; /* Para mag-stack sa mobile */
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.footer-section {
+  flex: 1; /* Hayaan silang mag-adjust */
+  min-width: 300px; /* Minimum na lapad bago mag-wrap */
+}
+
+/* Tiyakin na ang "Follow Us" section ay nasa kanan */
+.footer-section:last-child {
+  flex-grow: 0; /* Para 'di masyadong lumaki */
+  min-width: auto; /* Hayaan siyang lumiit */
+}
+
+.footer-section h4 {
+  margin-bottom: 25px;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 18px;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-logo {
+  font-size: 32px;
+  color: var(--primary-color);
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+.footer-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 15px;
+  max-width: 400px; /* Nilimitahan ang haba ng description */
+}
+
+/* Inalis na natin ang .footer-links kaya wala na 'yung CSS para doon */
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+.social-links a {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  font-size: 18px;
+  transition: var(--transition);
+}
+.social-links a:hover {
+  background: var(--primary-color);
+  color: #fff;
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(255, 99, 71, 0.4); /* Glow effect */
+}
+
+/* Redesign ng "pinakang footer" */
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Para sa mobile */
+  gap: 15px;
+}
+.footer-copyright {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+.footer-disclaimer {
+  color: var(--text-secondary);
+  font-size: 13px;
+  opacity: 0.7;
+  max-width: 500px; /* Para 'di masyadong humaba */
+  text-align: right;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 1024px) {
+  .nav-links { gap: 20px; }
+  .hero-title { font-size: 46px; }
+  .hero-title-logo { max-height: 120px; } /* Adjust banner logo size */
+  .media-card { width: 190px; }
+  .media-card img { height: 285px; }
+}
+
+@media (max-width: 768px) {
+  .navbar-container { padding: 0 20px; }
+  .nav-links { display: none; }
+  .mobile-menu-btn { display: block; }
+  
+  /* Ang inline search ay naka-disable na sa JS/CSS, kaya ang search-btn ay para sa modal */
+  .search-container.active .inline-search-input {
+   display: none; /* Siguraduhin tago pa rin */
+  }
+  
+  .hero-banner {
+    height: 70vh;
+    min-height: 450px;
+  }
+  .hero-content { padding: 0 20px 60px; }
+  .hero-title { font-size: 36px; }
+  .hero-title-logo { max-height: 100px; } /* Adjust banner logo size */
+  .hero-description { font-size: 15px; }
+  
+  .content-wrapper { padding: 30px 20px; }
+  .row-title { font-size: 22px; }
+  
+  .carousel-btn { display: none; }
+  
+  .media-list { gap: 15px; }
+  .media-card { width: 150px; }
+  .media-card img { height: 225px; }
+  .media-card-title { font-size: 14px; }
+  .media-card-overlay { padding: 15px 10px 10px; }
+
+  .modal-container { width: 95%; max-height: 95vh; }
+  .modal-details-area { padding: 20px; }
+  .modal-details-layout { flex-direction: column; }
+  .modal-poster-col { width: 100%; max-width: 250px; margin: 0 auto 20px; }
+  .modal-title { font-size: 24px; padding-right: 0; }
+  .modal-title-logo { max-height: 60px; } /* Adjust modal logo size */
+  
+  /* Make controls stack nicely on mobile */
+  .modal-playback-controls { flex-direction: column; align-items: stretch; }
+  .server-controls, .modal-tv-controls { flex-basis: auto; }
+  .modal-tv-controls { flex-direction: column; } /* Stack season/episode too */
+
+  .search-modal-content { padding: 80px 20px 40px; }
+  .search-results { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; }
+  .search-results .media-card img { height: 180px; }
+
+  .footer {
+    padding: 40px 20px 0;
+  }
+  .footer-content {
+    /* Ito ay magiging 'column' na dahil sa flex-wrap at min-width */
+    gap: 30px;
+  }
+  .footer-bottom {
+    flex-direction: column; /* Stack ang copyright at disclaimer */
+    align-items: center;
+    text-align: center;
+    padding: 25px 0;
+  }
+  .footer-disclaimer {
+    text-align: center;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text { font-size: 22px; }
+  .hero-title { font-size: 30px; }
+  .hero-title-logo { max-height: 80px; } /* Adjust banner logo size */
+  .hero-description { font-size: 14px; }
+  .btn { padding: 10px 20px; font-size: 14px; }
+  
+  .media-card { width: 130px; }
+  .media-card img { height: 195px; }
+  
+  .modal-title { font-size: 20px; }
+  .modal-title-logo { max-height: 50px; } /* Adjust modal logo size */
+  .modal-poster-col { max-width: 200px; }
+  .modal-details-area { padding: 15px; }
+  /* Ensure controls stack on very small screens */
+  .modal-playback-controls { align-items: stretch; } 
+  .server-controls { align-items: flex-start; flex-direction: column;}
+  .server-select { max-width: none; } /* Allow server select to fill width */
+  .modal-tv-controls { align-items: stretch; }
+  #season-select { max-width: none; } /* Allow season select to fill width */
+  
+  .search-input { font-size: 16px; padding: 15px 20px 15px 50px; }
+  .search-icon { left: 15px; }
+}
+
+/* ==================== SCROLLBAR STYLING ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+
+/* ======================================= */
+/* === STYLES PARA SA ALL.HTML PAGE === */
+/* ======================================= */
+
+/* Itataas natin ang content para may space mula sa navbar */
+.content-wrapper.all-view-page {
+  padding-top: 100px; 
+}
+
+.page-title-container {
+  margin-bottom: 30px;
+  padding-left: 10px;
+}
+
+#page-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+  border-left: 5px solid var(--primary-color);
+  padding-left: 15px;
+}
+
+/* Ito ang grid na papalit sa carousel */
+.content-grid-container {
+  display: grid;
+  /*     Mag-a-adjust ang columns depende sa laki ng screen.
+    Ang 'minmax(180px, 1fr)' ay nagsasabing "gawing 180px ang minimum na lapad, 
+    pero palakihin (1fr) para punan ang space".
+  */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+/* Gagamitin natin ulit 'yung .media-card style mula sa home.css 
+  pero ia-adjust natin para sa grid
+*/
+.content-grid-container .media-card {
+  width: 100%; /* Para sakupin ang buong grid cell */
+}
+
+.content-grid-container .media-card img {
+  /*     Gagamitin natin ang aspect-ratio para automatic 
+    mag-adjust ang taas (2/3 ratio)
+  */
+  aspect-ratio: 2 / 3;
+  height: auto; /* Hayaan ang aspect-ratio na mag-adjust */
+  width: 100%;
+}
+
+.pagination-container {
+  text-align: center;
+  margin-top: 40px;
+  padding-bottom: 20px;
+}
+
+/* Responsive adjustments para sa grid */
+@media (max-width: 768px) {
+  .content-grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+  }
+  #page-title {
+    font-size: 24px;
+  }
+}
