@@ -725,5 +725,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     console.log(">>> DOMContentLoaded handler finished."); // DEBUG LOG
 });
-
-
