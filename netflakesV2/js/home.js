@@ -9,7 +9,7 @@ const CONFIG = {
     'player.videasy.net': 'https://player.videasy.net',
     'vidfast.pm': 'https://vidfast.pm',
     'www.vidsrc.wtf': 'https://vidsrc.wtf/api/1',
-    'vidora.su': 'https://vidora.su'
+    'spencerdevs.xyz': 'https://spencerdevs.xyz'
   }
 };
 
@@ -728,3 +728,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     console.log(">>> DOMContentLoaded handler finished."); // DEBUG LOG
 });
+
