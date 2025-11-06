@@ -315,9 +315,8 @@ function changeServer() {
         // Server 2: vidsrc.me (Gumagamit ng TMDB ID + ?tmdb=)
         embedURL = `${baseURL}/${type}/?tmdb=${tmdbId}`; 
     }
-    else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'vidora.su') { 
+    else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'spencerdevs.xyz') { 
         // Server 3, 4, at 6: (Gumagamit ng TMDB ID, walang /embed/)
-        // NILIPAT NATIN ANG 'vidora.su' DITO
         embedURL = `${baseURL}/${type}/${tmdbId}`; 
     }
     else if (server === 'www.vidsrc.wtf') {
@@ -340,8 +339,7 @@ function changeServer() {
       else if (server === 'vidsrc.me') { 
         embedURL = `${baseURL}/${type}/?tmdb=${tmdbId}`; 
       }
-      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'vidora.su') { 
-        // NILIPAT NATIN ANG 'vidora.su' DITO
+      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'spencerdevs.xyz') { 
         embedURL = `${baseURL}/${type}/${tmdbId}`; 
       }
       else if (server === 'www.vidsrc.wtf') {
@@ -356,8 +354,7 @@ function changeServer() {
       else if (server === 'vidsrc.me') { 
           embedURL = `${baseURL}/${type}/?tmdb=${tmdbId}&s=${season}&e=${episode}`; 
       }
-      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'vidora.su') { 
-        // NILIPAT NATIN ANG 'vidora.su' DITO
+      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'spencerdevs.xyz') { 
           embedURL = `${baseURL}/${type}/${tmdbId}/${season}/${episode}`; 
       }
       else if (server === 'www.vidsrc.wtf') {
@@ -728,4 +725,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     console.log(">>> DOMContentLoaded handler finished."); // DEBUG LOG
 });
+
 
