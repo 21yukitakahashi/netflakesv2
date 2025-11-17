@@ -1,6 +1,6 @@
 // ==================== CONFIGURATION ====================
 const CONFIG = {
-  API_KEY: '4e677baabbee6c14b748aa4c9c936109',
+  API_KEY: '4e677baabbee6c14b748aa4c9c936109', // Siguraduhin na tama pa rin ang API key mo
   BASE_URL: 'https://api.themoviedb.org/3',
   IMG_URL: 'https://image.tmdb.org/t/p/original',
   SERVERS: {
@@ -19,7 +19,7 @@ let searchTimeout = null;
 let isInlineSearchActive = false;
 
 // ==================== API ====================
-// ... (API Functions: fetchTrending, fetchTrendingAnime, fetchDiscover, searchContent, fetchDetails - WALANG BINAGO DITO) ...
+
 async function fetchTrending(type, page = 1) {
   try {
     const valid_type = (type === 'movie' || type === 'tv') ? type : 'movie';
@@ -81,7 +81,7 @@ async function searchContent(query) {
 }
 async function fetchDetails(type, id) {
   try {
-    // Idinagdag natin ang ,external_ids para makuha ang IMDB ID
+    // === UPDATED: Idinagdag ang 'external_ids' para makuha ang IMDB ID ===
     const res = await fetch(`${CONFIG.BASE_URL}/${type}/${id}?api_key=${CONFIG.API_KEY}&append_to_response=images,external_ids`);
     const data = await res.json();
     data.media_type = type;
@@ -94,7 +94,6 @@ async function fetchDetails(type, id) {
 
 
 // ==================== UI ====================
-// ... (UI Functions: displayBanner, displayList, createMediaCard, createSearchResultItem, searchTMDB_Inline, toggleInlineSearch - WALANG BINAGO DITO) ...
 function displayBanner(item) {
   const banner = document.getElementById('banner');
   const titleElement = document.getElementById('banner-title');
@@ -128,7 +127,7 @@ function createMediaCard(item) {
   card.setAttribute('aria-label', (item.title || item.name || 'Open') + ' details');
   if (!item.media_type) { item.media_type = item.title ? 'movie' : 'tv'; }
   const img = document.createElement('img');
-  img.src = item.poster_path ? `${CONFIG.IMG_URL}${item.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Image';
+  img.src = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Image'; // Gumamit ng w500 para mas mabilis
   img.alt = item.title || item.name || 'Poster'; img.loading = 'lazy';
   const overlay = document.createElement('div'); overlay.className = 'media-card-overlay';
   const title = document.createElement('div'); title.className = 'media-card-title'; title.textContent = item.title || item.name;
@@ -181,7 +180,46 @@ function toggleInlineSearch(forceState) {
 
 
 // ==================== MODAL (Details) ====================
-// ... (Modal Functions: loadEpisodes, createEpisodeListItem, showDetails, closeModal - WALANG BINAGO DITO) ...
+
+// === BAGONG FUNCTION PARA SA TABS ===
+function setupModalTabs() {
+    const modal = document.getElementById('modal');
+    // Siguraduhin na nahanap ang modal bago magpatuloy
+    if (!modal) {
+        console.error("setupModalTabs: Hindi nahanap ang element na #modal.");
+        return;
+    }
+    
+    const tabButtons = modal.querySelectorAll('.modal-tab-btn');
+    const tabContents = modal.querySelectorAll('.modal-tab-content');
+
+    // Siguraduhin na may nahanap na buttons
+    if (tabButtons.length === 0) {
+        console.error("setupModalTabs: Walang nahanap na '.modal-tab-btn' buttons.");
+        return;
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            console.log("Tab button clicked:", button.dataset.tab); // Debug Log
+            const tabName = button.dataset.tab;
+
+            // 1. Ayusin ang active state ng buttons
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // 2. Ipakita ang tamang content
+            tabContents.forEach(content => {
+                if (content.id === `tab-content-${tabName}`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        });
+    });
+}
+
 async function loadEpisodes(tvId, seasonNumber) {
   const episodeListContainer = document.getElementById('episode-list');
   episodeListContainer.innerHTML = '<div class="inline-search-results-feedback"><i class="fas fa-spinner fa-spin"></i> Loading episodes...</div>';
@@ -217,70 +255,151 @@ function createEpisodeListItem(ep) {
   item.appendChild(numberSpan); item.appendChild(thumbnail); item.appendChild(infoDiv); item.appendChild(playIcon);
   return item;
 }
+
+// === ITO ANG TAMANG `showDetails` FUNCTION PARA SA TABBED LAYOUT ===
 async function showDetails(item) {
   const searchModal = document.getElementById('search-modal'); if (searchModal.classList.contains('active')) { closeSearchModal(); }
   currentItem = item;
   const modalContainer = document.getElementById('modal-container'); const modal = document.getElementById('modal');
-  const modalTitle = document.getElementById('modal-title'); const modalDescription = document.getElementById('modal-description');
-  const modalImage = document.getElementById('modal-image'); const modalRating = document.getElementById('modal-rating');
-  const modalYear = document.getElementById('modal-year'); const modalType = document.getElementById('modal-type');
-  const modalGenres = document.getElementById('modal-genres'); const modalBackdrop = document.getElementById('modal-backdrop-image');
-  const seasonSelect = document.getElementById('season-select'); seasonSelect.innerHTML = '';
+  
+  // Kunin ang mga elements sa TAMANG pwesto nila (iba-iba na)
+  const modalTitle = document.getElementById('modal-title'); 
+  const modalDescription = document.getElementById('modal-description');
+  const modalImage = document.getElementById('modal-image'); 
+  const modalRating = document.getElementById('modal-rating');
+  const modalYear = document.getElementById('modal-year');
+  const modalType = document.getElementById('modal-type');
+  const modalGenres = document.getElementById('modal-genres');
+  const modalBackdrop = document.getElementById('modal-backdrop-image');
+  const seasonSelect = document.getElementById('season-select');
+  
+  // I-clear ang mga lumang data
+  seasonSelect.innerHTML = '';
   document.getElementById('episode-list').innerHTML = '<div class="episode-list-placeholder">Select a season to view episodes.</div>';
   let media_type = item.media_type; if (!media_type) { media_type = item.title ? 'movie' : 'tv'; } if (media_type === 'anime') { media_type = 'tv'; }
   modalTitle.innerHTML = ''; let detailedItem = item;
- if (!item.images && item.id) { console.log("Fetching full details..."); detailedItem = await fetchDetails(media_type, item.id) || item; }
+  
+  // Mag-fetch ng buong details
+  if (!item.images && item.id) { 
+    console.log("Fetching full details..."); 
+    detailedItem = await fetchDetails(media_type, item.id) || item; 
+  }
 
-  // --- BAGO: I-save ang IMDB ID ---
+  // === UPDATED: I-save ang IMDB ID ===
   if (detailedItem?.external_ids?.imdb_id) {
     currentItem.imdb_id = detailedItem.external_ids.imdb_id;
     console.log(`[showDetails] IMDB ID found: ${currentItem.imdb_id}`);
   } else {
     console.warn(`[showDetails] IMDB ID NOT found for ${detailedItem.id}`);
-    currentItem.imdb_id = null; // Ilagay na null kung walang nakuha
+    currentItem.imdb_id = null;
   }
-  // --- END NG BAGO ---
-
-  let logoToUse = null; if (detailedItem.images?.logos?.length > 0) { logoToUse = detailedItem.images.logos.find(logo => logo.iso_639_1 === 'en') || detailedItem.images.logos[0]; }
+  
+  // --- Ilagay ang data sa mga elements ---
+  let logoToUse = null; 
+  if (detailedItem.images?.logos?.length > 0) { 
+    logoToUse = detailedItem.images.logos.find(logo => logo.iso_639_1 === 'en') || detailedItem.images.logos[0]; 
+  }
   if (logoToUse) {
-    const logoImg = document.createElement('img'); logoImg.src = `https://image.tmdb.org/t/p/w500${logoToUse.file_path}`;
-    logoImg.className = 'modal-title-logo'; logoImg.alt = detailedItem.title || detailedItem.name; modalTitle.appendChild(logoImg);
-  } else { modalTitle.textContent = detailedItem.title || detailedItem.name || ''; }
+    const logoImg = document.createElement('img'); 
+    logoImg.src = `https://image.tmdb.org/t/p/w500${logoToUse.file_path}`;
+    logoImg.className = 'modal-title-logo'; 
+    logoImg.alt = detailedItem.title || detailedItem.name; 
+    modalTitle.appendChild(logoImg);
+  } else { 
+    modalTitle.textContent = detailedItem.title || detailedItem.name || ''; 
+  }
+  
   modalDescription.textContent = detailedItem.overview || 'No description available.';
-  modalImage.src = `${CONFIG.IMG_URL}${detailedItem.poster_path}`; modalImage.alt = (detailedItem.title || detailedItem.name || '') + ' poster';
+  modalImage.src = detailedItem.poster_path ? `${CONFIG.IMG_URL}${detailedItem.poster_path}` : 'https://via.placeholder.com/300x450?text=No+Image';
+  modalImage.alt = (detailedItem.title || detailedItem.name || '') + ' poster';
   modalBackdrop.src = detailedItem.backdrop_path ? `${CONFIG.IMG_URL}${detailedItem.backdrop_path}` : '';
   modalRating.textContent = Number(detailedItem.vote_average || 0).toFixed(1);
-  const year = detailedItem.release_date || detailedItem.first_air_date; modalYear.textContent = year ? new Date(year).getFullYear() : 'N/A';
-  currentItem.media_type = media_type; modalType.textContent = media_type === 'movie' ? 'Movie' : 'TV Show';
-  modalGenres.innerHTML = ''; let genres = detailedItem.genres || [];
-  if (genres.length > 0) { genres.slice(0, 4).forEach(genre => { const tag = document.createElement('span'); tag.className = 'genre-tag'; tag.textContent = genre.name; modalGenres.appendChild(tag); }); }
+  const year = detailedItem.release_date || detailedItem.first_air_date; 
+  modalYear.textContent = year ? new Date(year).getFullYear() : 'N/A';
+  currentItem.media_type = media_type; 
+  modalType.textContent = media_type === 'movie' ? 'Movie' : 'TV Show';
+  
+  modalGenres.innerHTML = ''; 
+  let genres = detailedItem.genres || [];
+  if (genres.length > 0) { 
+    genres.slice(0, 4).forEach(genre => { 
+      const tag = document.createElement('span'); 
+      tag.className = 'genre-tag'; 
+      tag.textContent = genre.name; 
+      modalGenres.appendChild(tag); 
+    }); 
+  }
+  
+  // --- Ayusin ang controls para sa TV o Movie ---
   modalContainer.classList.remove('is-movie', 'is-tv');
   if (currentItem.media_type === 'tv') {
     modalContainer.classList.add('is-tv');
     if (detailedItem?.seasons) {
-      detailedItem.seasons.forEach(season => { if (season.season_number > 0) { const option = document.createElement('option'); option.value = season.season_number; option.textContent = `Season ${season.season_number} (${season.episode_count} eps)`; seasonSelect.appendChild(option); } });
+      detailedItem.seasons.forEach(season => { 
+        if (season.season_number > 0) { 
+          const option = document.createElement('option'); 
+          option.value = season.season_number; 
+          option.textContent = `Season ${season.season_number} (${season.episode_count} eps)`; 
+          seasonSelect.appendChild(option); 
+        } 
+      });
       seasonSelect.onchange = () => loadEpisodes(detailedItem.id, seasonSelect.value);
-      if (seasonSelect.value) { loadEpisodes(detailedItem.id, seasonSelect.value); } else { document.getElementById('episode-list').innerHTML = '<div class="episode-list-placeholder">No seasons found.</div>'; changeServer(); }
-    } else { console.warn("Season data missing:", detailedItem?.id); document.getElementById('episode-list').innerHTML = '<div class="episode-list-placeholder">Could not load season data.</div>'; changeServer(); }
-  } else { modalContainer.classList.add('is-movie'); changeServer(); }
-  modal.classList.add('active'); modal.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  console.log("closeModal called."); const modal = document.getElementById('modal'); const modalVideo = document.getElementById('modal-video');
-  modal.classList.remove('active'); modal.setAttribute('aria-hidden', 'true'); modalVideo.src = ''; document.body.style.overflow = 'auto';
-  document.getElementById('season-select').innerHTML = ''; document.getElementById('episode-list').innerHTML = '<div class="episode-list-placeholder">Select a season to view episodes.</div>';
-  document.getElementById('modal-container').classList.remove('is-movie', 'is-tv'); currentItem = null;
+      if (seasonSelect.value) { 
+        loadEpisodes(detailedItem.id, seasonSelect.value); 
+      } else { 
+        document.getElementById('episode-list').innerHTML = '<div class="episode-list-placeholder">No seasons found.</div>'; 
+        changeServer(); 
+      }
+    } else { 
+      console.warn("Season data missing:", detailedItem?.id); 
+      document.getElementById('episode-list').innerHTML = '<div class="episode-list-placeholder">Could not load season data.</div>'; 
+      changeServer(); 
+    }
+  } else { 
+    modalContainer.classList.add('is-movie'); 
+    changeServer(); 
+  }
+  
+  // === UPDATED: I-reset ang Tabs sa Default ===
+  document.querySelector('.modal-tab-btn[data-tab="play"]').classList.add('active');
+  document.querySelector('.modal-tab-btn[data-tab="details"]').classList.remove('active');
+  document.getElementById('tab-content-play').classList.add('active');
+  document.getElementById('tab-content-details').classList.remove('active');
+
+  modal.classList.add('active'); 
+  modal.setAttribute('aria-hidden', 'false'); 
+  document.body.style.overflow = 'hidden';
 }
 
-// ===========================================
-// === ITO ANG IN-UPDATE NA changeServer FUNCTION ===
-// ===========================================
+function closeModal() {
+  console.log("closeModal called."); 
+  const modal = document.getElementById('modal'); 
+  const modalVideo = document.getElementById('modal-video');
+  modal.classList.remove('active'); 
+  modal.setAttribute('aria-hidden', 'true'); 
+  modalVideo.src = ''; 
+  document.body.style.overflow = 'auto';
+  
+  // I-clear ang dynamic content
+  document.getElementById('season-select').innerHTML = ''; 
+  document.getElementById('episode-list').innerHTML = '<div class="episode-list-placeholder">Select a season to view episodes.</div>';
+  
+  const modalContainer = document.getElementById('modal-container');
+  modalContainer.classList.remove('is-movie', 'is-tv');
+  
+  // === UPDATED: I-reset ang Fullscreen State ===
+  modalContainer.classList.remove('is-fullscreen-player');
+
+  currentItem = null;
+}
+
+// === UPDATED: changeServer function (Final Version) ===
 function changeServer() {
   if (!currentItem) { console.warn("changeServer called but currentItem is null."); return; }
   
-  // --- Kunin ang parehong ID ---
+  // Kunin ang parehong ID
   const tmdbId = currentItem.id;
-  const imdbId = currentItem.imdb_id; // Galing sa showDetails (kailangan pa rin para sa vidsrc.cc)
+  const imdbId = currentItem.imdb_id; // Galing sa showDetails
 
   const server = document.getElementById('server').value; 
   let type = currentItem.media_type; 
@@ -293,7 +412,7 @@ function changeServer() {
   let embedURL = ''; 
   console.log(`[changeServer] Building URL: Server=${server}, Type=${type}, TMDB_ID=${tmdbId}, IMDB_ID=${imdbId}`);
 
-  // --- Check kung may IMDB ID para sa vidsrc.cc (Server 1) ---
+  // Check kung may IMDB ID para sa vidsrc.cc (Server 1)
   if (server === 'vidsrc.cc' && !imdbId) {
     console.error(`Server ${server} requires an IMDB ID, but none was found.`);
     alert(`Error: Server ${server} requires an IMDB ID, but it's not available for this title.`);
@@ -302,10 +421,7 @@ function changeServer() {
     return; 
   }
 
-  // ===========================================
-  // === LOGIC PARA SA BAWAT SERVER ===
-  // ===========================================
-
+  // Logic para sa bawat server
   if (type === 'movie') {
     if (server === 'vidsrc.cc') { 
         // Server 1: vidsrc.cc (Gumagamit ng IMDB ID)
@@ -316,7 +432,7 @@ function changeServer() {
         embedURL = `${baseURL}/${type}/?tmdb=${tmdbId}`; 
     }
     else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'spencerdevs.xyz') { 
-        // Server 3, 4, at 6: (Gumagamit ng TMDB ID, walang /embed/)
+        // Server 3, 4, & 6: (Gumagamit ng TMDB ID, walang /embed/)
         embedURL = `${baseURL}/${type}/${tmdbId}`; 
     }
     else if (server === 'www.vidsrc.wtf') {
@@ -370,8 +486,8 @@ function changeServer() {
   }
 }
 
+
 // ==================== SEARCH MODAL (Mobile) ====================
-// ... (Search Modal Functions: openSearchModal, closeSearchModal, searchTMDB - WALANG BINAGO DITO) ...
 function openSearchModal() { const m = document.getElementById('search-modal'); const input = document.getElementById('search-input'); m.classList.add('active'); m.setAttribute('aria-hidden', 'false'); input.focus(); document.body.style.overflow = 'hidden'; }
 function closeSearchModal() { const m = document.getElementById('search-modal'); const input = document.getElementById('search-input'); const results = document.getElementById('search-results'); m.classList.remove('active'); m.setAttribute('aria-hidden', 'true'); input.value = ''; results.innerHTML = ''; document.body.style.overflow = 'auto'; }
 async function searchTMDB() {
@@ -388,7 +504,6 @@ async function searchTMDB() {
 
 
 // ==================== HELPERS ====================
-// ... (Helper Functions: scrollCarousel, toggleMobileMenu, handleNavbarScroll, initScrollObserver - WALANG BINAGO DITO) ...
 function scrollCarousel(listId, direction) { const list = document.getElementById(listId); const amount = 400; list.scrollBy({ left: direction * amount, behavior: 'smooth' }); }
 function toggleMobileMenu() { const menu = document.getElementById('mobile-menu'); const isActive = menu.classList.toggle('active'); menu.setAttribute('aria-hidden', String(!isActive)); }
 function handleNavbarScroll() { const navbar = document.querySelector('.navbar'); if (window.scrollY > 50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); }
@@ -418,64 +533,51 @@ function getUrlParams() {
   };
 }
 
-// ===================================================================
-// === ITO ANG INAYOS NA FUNCTION PARA SA "VIEW ALL" ===
-// ===================================================================
 async function loadAllResults(page = 1) {
-  console.log(`[loadAllResults] Called. Page: ${page}, Type: ${allType}, Genre: ${allGenre}`); // DEBUG LOG
+  console.log(`[loadAllResults] Called. Page: ${page}, Type: ${allType}, Genre: ${allGenre}`);
   const grid = document.getElementById('all-results-grid');
   const loading = document.getElementById('all-loading');
   const empty = document.getElementById('all-empty');
   const loadMoreBtn = document.getElementById('load-more-btn');
 
-  // Defensive check kung nahanap ba ang elements
   if (!grid || !loading || !empty || !loadMoreBtn) {
       console.error("[loadAllResults] Error: Missing required HTML elements (grid, loading, empty, loadMoreBtn).");
       return;
   }
 
-  loading.style.display = 'flex'; // IPAPAKITA ANG LOADING
-  console.log("[loadAllResults] Loading spinner shown."); // DEBUG LOG
+  loading.style.display = 'flex';
   loadMoreBtn.style.display = 'none';
   if (page === 1) {
-    grid.innerHTML = ''; // Laging linisin ang grid kapag page 1 (o nag-filter)
+    grid.innerHTML = '';
   }
 
   let results = [];
   
-  try { // Idinagdag ang try...catch block para mahuli ang errors sa fetch
+  try {
     if (allType === 'anime') {
         results = await fetchDiscover('anime', allGenre, page);
-        console.log(`[loadAllResults] Fetched Discover (Anime). Genre: ${allGenre}, Page: ${page}. Results count: ${results.length}`); // DEBUG LOG
     } 
     else if (allGenre) {
         results = await fetchDiscover(allType, allGenre, page);
-        console.log(`[loadAllResults] Fetched Discover (${allType}). Genre: ${allGenre}, Page: ${page}. Results count: ${results.length}`); // DEBUG LOG
     } 
     else {
         results = await fetchTrending(allType, page);
-        console.log(`[loadAllResults] Fetched Trending (${allType}). Page: ${page}. Results count: ${results.length}`); // DEBUG LOG
     }
   } catch (error) {
-      console.error("[loadAllResults] Error during fetch:", error); // DEBUG LOG error
-      results = []; // Ensure results is empty on error
+      console.error("[loadAllResults] Error during fetch:", error);
+      results = [];
   }
 
-
-  loading.style.display = 'none'; // ITATAGO ANG LOADING
-  console.log("[loadAllResults] Loading spinner hidden."); // DEBUG LOG
+  loading.style.display = 'none';
 
   if (page === 1 && results.length === 0) {
-    console.log("[loadAllResults] No results found on page 1. Showing empty state."); // DEBUG LOG
     empty.style.display = 'flex';
-    return; // Ititigil na dito kung walang results sa page 1
+    return;
   } else {
-      empty.style.display = 'none'; // Siguraduhing tago ang empty state kung may results
+    empty.style.display = 'none';
   }
 
-
   if (results.length > 0) {
-    console.log("[loadAllResults] Displaying results."); // DEBUG LOG
     results.forEach(item => {
       if (!item.media_type) {
         item.media_type = (allType === 'anime') ? 'tv' : allType;
@@ -483,27 +585,20 @@ async function loadAllResults(page = 1) {
       grid.appendChild(createMediaCard(item));
     });
     if (results.length === 20) { // Standard TMDB page size
-      console.log("[loadAllResults] Showing Load More button."); // DEBUG LOG
       loadMoreBtn.style.display = 'inline-flex';
     } else {
-      console.log("[loadAllResults] Hiding Load More button (less than 20 results)."); // DEBUG LOG
-      loadMoreBtn.style.display = 'none'; // Wala nang next page malamang
+      loadMoreBtn.style.display = 'none';
     }
   } else {
-    // Kung hindi page 1 at walang results (meaning, naubos na sa Load More)
-    console.log(`[loadAllResults] No more results found on page ${page}. Hiding Load More button.`); // DEBUG LOG
     loadMoreBtn.style.display = 'none';
   }
 }
-// ===================================================================
-// === END NG INAYOS NA FUNCTION ===
-// ===================================================================
 
 function populateGenreFilter(type, activeGenreId) {
-    console.log(`[populateGenreFilter] Called. Type: ${type}, Active Genre: ${activeGenreId}`); // DEBUG LOG
+    console.log(`[populateGenreFilter] Called. Type: ${type}, Active Genre: ${activeGenreId}`);
     const container = document.getElementById('genre-filter-bar-container');
     if (!container) {
-        console.error("[populateGenreFilter] Error: Container #genre-filter-bar-container not found."); // DEBUG LOG error
+        console.error("[populateGenreFilter] Error: Container #genre-filter-bar-container not found.");
         return;
     }
 
@@ -512,7 +607,7 @@ function populateGenreFilter(type, activeGenreId) {
     let genreMap;
     if (type === 'movie') { genreMap = MOVIE_GENRES; }
     else if (type === 'tv' || type === 'anime') { genreMap = TV_GENRES; }
-    else { console.warn(`[populateGenreFilter] Unknown type: ${type}`); return; } // DEBUG LOG warning
+    else { console.warn(`[populateGenreFilter] Unknown type: ${type}`); return; }
 
     const allBtn = document.createElement('button');
     allBtn.className = 'genre-filter-btn'; allBtn.textContent = 'All'; allBtn.dataset.genreId = 'all'; 
@@ -526,19 +621,15 @@ function populateGenreFilter(type, activeGenreId) {
         container.appendChild(btn);
     }
 
-    // Tanggalin muna ang lumang listener kung meron (importante para hindi dumami)
-    container.replaceWith(container.cloneNode(true)); // Simple way to remove all listeners
-    const newContainer = document.getElementById('genre-filter-bar-container'); // Kunin ulit yung bago
+    container.replaceWith(container.cloneNode(true));
+    const newContainer = document.getElementById('genre-filter-bar-container');
 
-    // Magdagdag ng bagong listener
     newContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains('genre-filter-btn')) {
             const clickedBtn = e.target;
             const newGenreId = clickedBtn.dataset.genreId;
-            console.log(`[Genre Filter Click] Clicked Genre ID: ${newGenreId}`); // DEBUG LOG
 
             if (clickedBtn.classList.contains('active')) {
-                console.log("[Genre Filter Click] Clicked active button, doing nothing."); // DEBUG LOG
                 return;
             }
 
@@ -547,30 +638,26 @@ function populateGenreFilter(type, activeGenreId) {
 
             allPage = 1; 
             allGenre = (newGenreId === 'all') ? null : newGenreId;
-            console.log(`[Genre Filter Click] State updated - Page: ${allPage}, Genre: ${allGenre}`); // DEBUG LOG
-
-            loadAllResults(allPage); // Reload results for the new genre
+            loadAllResults(allPage);
         }
     });
-    console.log("[populateGenreFilter] Filter bar populated and listener attached."); // DEBUG LOG
 }
 
 
 async function initAllPage() {
-  console.log("[initAllPage] Initializing all.html page..."); // DEBUG LOG
+  console.log("[initAllPage] Initializing all.html page...");
   const params = getUrlParams();
   allType = params.type;
   allGenre = params.genre; 
   allPage = 1;
-  console.log(`[initAllPage] Initial State - Type: ${allType}, Genre: ${allGenre}, Page: ${allPage}`); // DEBUG LOG
 
   const titleEl = document.getElementById('all-page-title');
-  const loadingScreen = document.getElementById('loading-screen'); // Para sa main loading screen
+  const loadingScreen = document.getElementById('loading-screen');
   const loadMoreBtn = document.getElementById('load-more-btn');
 
-  // Defensive checks for core elements
   if (!titleEl || !loadMoreBtn || !loadingScreen) {
       console.error("[initAllPage] Error: Missing required page elements (title, loadMoreBtn, loadingScreen).");
+      // Kung may error dito, HINDI MATATAGO ANG LOADING SCREEN
       return;
   }
   
@@ -581,38 +668,31 @@ async function initAllPage() {
   
   titleEl.textContent = title;
   document.title = `NetFlakes - ${title}`;
-  console.log(`[initAllPage] Page title set to: ${title}`); // DEBUG LOG
 
   populateGenreFilter(allType, allGenre);
 
-  // Tanggalin ang lumang listener sa Load More bago magdagdag ng bago
   const newLoadMoreBtn = loadMoreBtn.cloneNode(true);
   loadMoreBtn.parentNode.replaceChild(newLoadMoreBtn, loadMoreBtn);
 
-  newLoadMoreBtn.addEventListener('click', () => { // Gamitin ang newLoadMoreBtn
-    console.log("[Load More Click] Button clicked."); // DEBUG LOG
+  newLoadMoreBtn.addEventListener('click', () => {
     allPage++;
-    console.log(`[Load More Click] Incrementing page to: ${allPage}`); // DEBUG LOG
-    loadAllResults(allPage); // Load the next page
+    loadAllResults(allPage);
   });
-  console.log("[initAllPage] Load More button listener attached."); // DEBUG LOG
 
-  await loadAllResults(allPage); // Initial load of results
-  console.log("[initAllPage] Initial results loaded."); // DEBUG LOG
+  await loadAllResults(allPage); // Initial load
 
   if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
-    console.log("[initAllPage] Hiding main loading screen."); // DEBUG LOG
-    setTimeout(() => loadingScreen.classList.add('hidden'), 100); // Small delay
+    console.log("[initAllPage] Hiding main loading screen.");
+    setTimeout(() => loadingScreen.classList.add('hidden'), 100);
   }
 }
 
 
-// ==================== INIT ====================
+// ==================== INIT (Homepage) ====================
 async function init() {
-  // Para lang sa index.html
   console.log("[init - Homepage] Starting initialization...");
   const loading = document.getElementById('loading-screen');
-  // ... (rest of the init function - WALANG BINAGO DITO) ...
+  
   const pendingItemId = localStorage.getItem('pendingItemId');
   const pendingItemType = localStorage.getItem('pendingItemType');
   if (pendingItemId && pendingItemType) {
@@ -621,9 +701,15 @@ async function init() {
     const item = await fetchDetails(pendingItemType, pendingItemId);
     if (item) {
       console.log("[init] Pending item details fetched. Hiding loading and showing details.");
-      loading.classList.add('hidden'); await showDetails(item); console.log("[init] Stopping init early after showing pending item."); return;
-    } else { console.warn("[init] Failed to fetch details for pending item. Continuing normal load."); }
+      if(loading) loading.classList.add('hidden'); // Siguraduhin na tago ang loading
+      await showDetails(item); 
+      console.log("[init] Stopping init early after showing pending item."); 
+      return;
+    } else { 
+      console.warn("[init] Failed to fetch details for pending item. Continuing normal load."); 
+    }
   }
+  
   try {
     console.log("[init] Starting initial data fetch (Movies, TV, Anime)...");
     const [movies, tvShows, anime] = await Promise.all([ fetchTrending('movie'), fetchTrending('tv'), fetchTrendingAnime() ]);
@@ -634,16 +720,32 @@ async function init() {
         console.log("[init] Fetching details for banner item...");
         let bannerItemType = randomItemForBanner.media_type; if (!bannerItemType) { bannerItemType = randomItemForBanner.title ? 'movie' : 'tv'; }
         const detailedBannerItem = await fetchDetails(bannerItemType, randomItemForBanner.id);
-        if (detailedBannerItem) { console.log("[init] Displaying banner with detailed item..."); displayBanner(detailedBannerItem); }
-        else { console.warn("[init] Failed to fetch details for banner item, using basic info."); displayBanner(randomItemForBanner); }
+        if (detailedBannerItem) { 
+            console.log("[init] Displaying banner with detailed item..."); 
+            displayBanner(detailedBannerItem); 
+        } else { 
+            console.warn("[init] Failed to fetch details for banner item, using basic info."); 
+            displayBanner(randomItemForBanner); 
+        }
     }
-    console.log("[init] Displaying lists..."); displayList(movies, 'movies-list'); displayList(tvShows, 'tvshows-list'); displayList(anime, 'anime-list');
-    console.log("[init] Lists displayed."); initScrollObserver();
-    if (!loading.classList.contains('hidden')) { console.log("[init] Hiding loading screen..."); setTimeout(() => loading.classList.add('hidden'), 100); }
+    console.log("[init] Displaying lists..."); 
+    displayList(movies, 'movies-list'); 
+    displayList(tvShows, 'tvshows-list'); 
+    displayList(anime, 'anime-list');
+    console.log("[init] Lists displayed."); 
+    initScrollObserver();
+    
+    if (loading && !loading.classList.contains('hidden')) { 
+        console.log("[init] Hiding loading screen..."); 
+        setTimeout(() => loading.classList.add('hidden'), 100); 
+    }
     else { console.log("[init] Loading screen was already hidden."); }
   } catch (err) {
-    console.error('[init] Initialization error:', err); loading.innerHTML = '<p>Error loading content. Please refresh the page.</p>';
-    setTimeout(() => { if (!loading.classList.contains('hidden')) { loading.classList.add('hidden'); } }, 1000);
+    console.error('[init] Initialization error:', err); 
+    if(loading) {
+        loading.innerHTML = '<p>Error loading content. Please refresh the page.</p>';
+        setTimeout(() => { if (!loading.classList.contains('hidden')) { loading.classList.add('hidden'); } }, 1000);
+    }
   }
 }
 // END INIT
@@ -654,7 +756,8 @@ window.addEventListener('scroll', handleNavbarScroll);
 document.addEventListener('keydown', (e) => { 
     if (e.key === 'Escape') { 
         closeModal(); closeSearchModal(); 
-        document.getElementById('mobile-menu').classList.remove('active'); 
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu) mobileMenu.classList.remove('active'); 
         toggleInlineSearch(false); 
     } 
 });
@@ -667,26 +770,26 @@ document.addEventListener('click', (e) => {
 // === PAGE ROUTING LOGIC (Updated with Debug Logs) ===
 // =======================================================
 document.addEventListener('DOMContentLoaded', () => {
-    console.log(">>> DOMContentLoaded event fired."); // DEBUG LOG
+    console.log(">>> DOMContentLoaded event fired."); 
 
     // === Setup Common Listeners ===
     const serverSelect = document.getElementById('server');
     if (serverSelect) { 
-        console.log("Attaching listener to #server select."); // DEBUG LOG
+        console.log("Attaching listener to #server select."); 
         serverSelect.addEventListener('change', changeServer); 
     } else {
-        console.warn("Element #server not found."); // DEBUG LOG warning
+        console.warn("Element #server not found."); 
     }
 
     const searchBtn = document.getElementById('search-btn-trigger');
     if (searchBtn) { 
-        console.log("Attaching listener to #search-btn-trigger."); // DEBUG LOG
+        console.log("Attaching listener to #search-btn-trigger."); 
         searchBtn.addEventListener('click', (e) => { 
             e.stopPropagation(); 
             if (window.innerWidth > 768) { toggleInlineSearch(); } else { openSearchModal(); } 
         }); 
     } else {
-        console.warn("Element #search-btn-trigger not found."); // DEBUG LOG warning
+        console.warn("Element #search-btn-trigger not found."); 
     }
 
     document.addEventListener('click', (e) => { 
@@ -694,34 +797,50 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isInlineSearchActive && container && !container.contains(e.target)) { toggleInlineSearch(false); } 
     });
 
-    console.log("Initializing scroll observer..."); // DEBUG LOG
+    // === LOGIC PARA SA MOBILE FULLSCREEN PLAYER ===
+    const fsBtn = document.getElementById('modal-fullscreen-btn');
+    const modalContainer = document.getElementById('modal-container');
+    if (fsBtn && modalContainer) {
+        console.log("Attaching listener to #modal-fullscreen-btn."); 
+        fsBtn.addEventListener('click', () => {
+            modalContainer.classList.toggle('is-fullscreen-player');
+        });
+    } else {
+        console.warn("Fullscreen button or modal container not found.");
+    }
+    
+    // === TATAWAGIN ANG TAB FUNCTION ===
+    setupModalTabs();
+
+
+    console.log("Initializing scroll observer..."); 
     initScrollObserver();
 
     // === PAGE ROUTING LOGIC ===
-    console.log("Determining current page for initialization..."); // DEBUG LOG
+    console.log("Determining current page for initialization..."); 
     const banner = document.getElementById('banner');
     const moviesList = document.getElementById('movies-list');
     const allResultsGrid = document.getElementById('all-results-grid');
 
     if (banner && moviesList) {
-        console.log(">>> Page Type: Homepage (index.html)"); // DEBUG LOG
+        console.log(">>> Page Type: Homepage (index.html)"); 
         init(); 
     } else if (allResultsGrid) {
-        console.log(">>> Page Type: All Results Page (all.html)"); // DEBUG LOG
+        console.log(">>> Page Type: All Results Page (all.html)"); 
         initAllPage(); // Ito ang function para sa all.html
     } else {
-        console.log(">>> Page Type: Other (e.g., genres.html - should be removed)"); // DEBUG LOG
+        console.log(">>> Page Type: Other (e.g., genres.html - no init)"); 
         
         const loading = document.getElementById('loading-screen');
         if (loading && !loading.classList.contains('hidden')) {
-            console.log("Hiding loading screen on 'Other' page."); // DEBUG LOG
+            console.log("Hiding loading screen on 'Other' page."); 
             if (!localStorage.getItem('pendingItemId')) {
                  setTimeout(() => loading.classList.add('hidden'), 100);
             } else {
-                 console.log("Pending item detected on 'Other' page, running init() for modal only."); // DEBUG LOG
+                 console.log("Pending item detected on 'Other' page, running init() for modal only."); 
                  init(); // Para sa pending item modal
             }
         }
     }
-    console.log(">>> DOMContentLoaded handler finished."); // DEBUG LOG
+    console.log(">>> DOMContentLoaded handler finished."); 
 });
