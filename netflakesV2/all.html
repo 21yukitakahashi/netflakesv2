@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+   <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>NetFlakes - Results</title>
+    <title>NetFlakes - Watch Movies & TV Shows</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,14 +11,17 @@
     
     <link rel="stylesheet" href="css/home.css">
     <link rel="preload" href="css/home.css" as="style">
-    <link rel="preload" href="js/home.js" as="script">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <script defer src="js/home.js"></script>
 </head>
 
 <body>
+    <div class="loading-screen" id="loading-screen">
+    <div class="loading-spinner"></div>
+</div>
+
+<div class="cursor-trail" id="cursor-trail"></div>
     <nav class="navbar">
         <div class="navbar-container">
             <div class="logo">
@@ -166,14 +169,13 @@
                                     <label for="server" class="server-label">
                                         <i class="fas fa-server"></i> Server:
                                     </label>
-                                    <select id="server" class="server-select">
-                                        <option value="vidsrc.cc">Server 1</option>
-                                        <option value="vidsrc.me">Server 2</option>
-                                        <option value="player.videasy.net">Server 3</option>
-                                        <option value="vidfast.pm">Server 4</option>
-                                        <option value="www.vidsrc.wtf">Server 5</option>
-                                        <option value="spencerdevs.xyz">Server 6</option>
-                                    </select>
+                                   <select id="server" class="server-select">
+    <option value="vidsrc.cc">Server 1</option>
+    <option value="vidsrc.me">Server 2</option>
+    <option value="player.videasy.net">Server 3</option>
+    <option value="vidfast.pm">Server 4</option>
+    <option value="www.vidsrc.wtf">Server 5</option>
+</select>
                                 </div>
 
                                 <div class="modal-tv-controls" id="modal-tv-controls">
@@ -267,4 +269,3 @@
     
 </body>
 </html>
-
