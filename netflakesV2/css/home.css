@@ -1491,6 +1491,7 @@ a {
     }
 }
 
+/* ==================== RESPONSIVE DESIGN (UPDATED) ==================== */
 @media (max-width: 768px) {
     .navbar-container {
         padding: 0 20px;
@@ -1527,10 +1528,12 @@ a {
 
     .hero-description {
         font-size: 15px;
+        /* Pinalaki ng konti */
     }
 
     .content-wrapper {
-        padding: 30px 20px;
+        padding: 40px 20px;
+        /* Dinagdagan ang vertical padding */
     }
 
     .row-title {
@@ -1546,11 +1549,13 @@ a {
     }
 
     .media-card {
-        width: 150px;
+        width: 160px;
+        /* Pinalaki ang cards (mula 150px) */
     }
 
     .media-card img {
-        height: 225px;
+        height: 240px;
+        /* Pinalaki ang image (mula 225px) */
     }
 
     .media-card-title {
@@ -1567,13 +1572,9 @@ a {
         border-radius: 12px;
     }
 
-    .modal-details-area {
-        /* padding: 0; */
-        /* Inalis na ito at nilipat sa sub-elements */
-    }
-
     .modal-info-header {
-        padding: 20px 20px 15px;
+        padding: 25px 20px 15px;
+        /* Dinagdagan ang top padding */
     }
 
     .modal-title {
@@ -1581,7 +1582,8 @@ a {
     }
 
     .modal-tabs {
-        margin: 15px 15px 0;
+        margin: 15px 20px 0;
+        /* Consistent side margin */
         padding: 5px;
     }
 
@@ -1591,7 +1593,14 @@ a {
     }
 
     .modal-tab-content-container {
-        padding: 20px 20px 25px;
+        padding: 25px 20px;
+        /* Consistent padding */
+    }
+
+    .modal-description {
+        font-size: 15px;
+        /* Pinalaki ang font (mula 14px) */
+        line-height: 1.7;
     }
 
     .modal-details-layout {
@@ -1623,58 +1632,51 @@ a {
         flex-direction: column;
     }
 
-    /* Mobile Fullscreen Player */
-    .modal-fullscreen-btn {
-        display: flex;
+    /* === UPDATED MOBILE FULLSCREEN (Easy Navigate) === */
+    .modal-container.is-fullscreen-player {
+        overflow: auto;
     }
 
-   /* === ITO ANG IPALIT MO (UPDATED) === */
-.modal-container.is-fullscreen-player {
-    /* Hahayaan natin ang modal container na mag-scroll */
-    overflow: auto; 
-}
+    .modal-container.is-fullscreen-player .modal-details-area {
+        /* Mananatili ito, hindi na naka 'display: none' */
+    }
 
-.modal-container.is-fullscreen-player .modal-details-area {
-    /* HINDI NA ITO NAKA 'display: none' */
-    /* Mananatili ito sa ilalim, handang balikan */
-}
+    .modal-container.is-fullscreen-player .modal-close {
+        display: none;
+    }
 
-.modal-container.is-fullscreen-player .modal-close {
-    /* Itatago pa rin natin ang main 'X' button */
-    display: none;
-}
+    .modal-container.is-fullscreen-player .modal-player-area {
+        /* Mag-o-overlay ito */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding-top: 0;
+        z-index: 5000;
+        background: #000;
+    }
 
-.modal-container.is-fullscreen-player .modal-player-area {
-    /* ITO ANG MAG-O-OVERLAY sa buong screen */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding-top: 0;
-    z-index: 5000; /* Siguraduhin na ito ang nasa pinakaharap */
-    background: #000;
-}
-
-.modal-container.is-fullscreen-player .modal-fullscreen-btn {
-    /* Ilalagay natin ang 'exit' button sa ibabaw ng player */
-    z-index: 5001; /* Mas mataas sa player */
-    top: 15px;
-    right: 15px;
-    bottom: auto;
-}
+    .modal-container.is-fullscreen-player .modal-fullscreen-btn {
+        z-index: 5001;
+        top: 15px;
+        right: 15px;
+        bottom: auto;
+    }
 
     .search-modal-content {
         padding: 80px 20px 40px;
     }
 
     .search-results {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        /* GINAWANG 2 COLUMNS (mula 3) para mas malaki */
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px;
     }
 
     .search-results .media-card img {
-        height: 180px;
+        height: 225px;
+        /* In-adjust para sa bagong width */
     }
 
     .footer {
@@ -1713,20 +1715,25 @@ a {
     }
 
     .hero-description {
-        font-size: 14px;
+        font-size: 15px;
+        /* Pinalaki (mula 14px) */
     }
 
     .btn {
-        padding: 10px 20px;
-        font-size: 14px;
+        padding: 12px 22px;
+        /* Pinalaki ang padding (mula 10px 20px) */
+        font-size: 15px;
+        /* Pinalaki (mula 14px) */
     }
 
     .media-card {
-        width: 130px;
+        width: 150px;
+        /* Pinalaki (mula 130px) */
     }
 
     .media-card img {
-        height: 195px;
+        height: 225px;
+        /* Pinalaki (mula 195px) */
     }
 
     .modal-title {
@@ -1742,15 +1749,18 @@ a {
     }
 
     .modal-info-header {
-        padding: 15px;
+        padding: 20px 20px 15px;
+        /* Pinalaki ang padding (mula 15px) */
     }
 
     .modal-tab-content-container {
-        padding: 15px;
+        padding: 20px;
+        /* Pinalaki (mula 15px) */
     }
 
     .modal-tabs {
-        margin: 15px 15px 0;
+        margin: 15px 20px 0;
+        /* Consistent side margin */
     }
 
     .modal-playback-controls {
@@ -1772,6 +1782,11 @@ a {
 
     #season-select {
         max-width: none;
+    }
+
+    .search-results {
+        /* Mananatiling 2 columns, na saktong-sakto (mula sa 768px block) */
+        gap: 15px;
     }
 
     .search-input {
@@ -1907,4 +1922,3 @@ color: var(--text-secondary);
     border-color: var(--primary-color);
     box-shadow: 0 4px 15px rgba(var(--primary-color-rgb, 255, 99, 71), 0.3);
 }
-
