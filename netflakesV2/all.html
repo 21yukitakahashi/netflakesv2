@@ -133,107 +133,107 @@
         </section>
     </div> 
     
-    <div class="modal" id="modal">
-        <div class="modal-backdrop" onclick="closeModal()"></div>
-        <div class="modal-container" id="modal-container">
-            <button class="modal-close" onclick="closeModal()">
-                <i class="fas fa-times"></i>
+   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+
+    <div class="modal-container" id="modal-container">
+        <button class="modal-close" id="modal-close-btn" onclick="closeModal()" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="modal-player-area">
+            <img src="" class="modal-backdrop-image" id="modal-backdrop-image" alt="">
+            <div class="video-container">
+                <iframe id="modal-video" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <button class="modal-fullscreen-btn" id="modal-fullscreen-btn" aria-label="Toggle fullscreen">
+                <i class="fas fa-expand"></i>
+                <i class="fas fa-compress"></i>
             </button>
-            <div class="modal-content">
-                <div class="modal-player-area">
-                    <img id="modal-backdrop-image" class="modal-backdrop-image" src="" alt="Backdrop">
-                    <div class="video-container">
-                        <iframe id="modal-video" allowfullscreen></iframe>
-                    </div>
+        </div>
+
+        <div class="modal-details-area">
+            
+            <div class="modal-info-header">
+                <h2 class="modal-title" id="modal-title">Loading title...</h2>
+                
+                <div class="modal-meta" id="modal-meta-container">
+                    <span class="rating-container">
+                        <i class="fas fa-star"></i>
+                        <span class="rating-text" id="modal-rating">0.0</span>
+                    </span>
+                    <span class="year-text" id="modal-year">2025</span>
+                    <span class="type-badge" id="modal-type">Movie</span>
                 </div>
-                <div class="modal-details-area">
+                
+                <div class="modal-genres" id="modal-genres">
+                    </div>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="modal-tab-btn active" data-tab="play">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button class="modal-tab-btn" data-tab="details">
+                    <i class="fas fa-info-circle"></i> Details
+                </button>
+            </div>
+
+            <div class="modal-tab-content-container">
+
+                <div class="modal-tab-content active" id="tab-content-play">
+                    
+                    <div class="modal-playback-controls">
+                        <div class="server-controls">
+                            <label for="server" class="server-label">
+                                <i class="fas fa-server"></i> Server:
+                            </label>
+                            <select id="server" class="server-select">
+                                <option value="vidsrc.cc">Server 1 (vidsrc.cc)</option>
+                                <option value="vidsrc.me">Server 2 (vidsrc.me)</option>
+                                <option value="player.videasy.net">Server 3 (videasy.net)</option>
+                                <option value="vidfast.pm">Server 4 (vidfast.pm)</option>
+                                <option value="www.vidsrc.wtf">Server 5 (vidsrc.wtf)</option>
+                                <option value="spencerdevs.xyz">Server 6 (spencerdevs.xyz)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="modal-tv-controls">
+                            <div class="tv-season-selector">
+                                <label for="season-select" class="tv-select-label">Season:</label>
+                                <select id="season-select" class="tv-select"></select>
+                            </div>
+                            <div class="tv-episode-list">
+                                <h4 class="episodes-heading">Episodes</h4>
+                                <div class="episode-list-items" id="episode-list">
+                                    <div class="episode-list-placeholder">Select a season.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div> <div class="modal-tab-content" id="tab-content-details">
+                    
                     <div class="modal-details-layout">
+                        
                         <div class="modal-poster-col">
                             <div class="modal-poster">
-                                <img id="modal-image" src="" alt="Poster" />
+                                <img id="modal-image" src="" alt="Poster">
                             </div>
                         </div>
+                        
                         <div class="modal-info-col">
-                            <div class="modal-title-header">
-                                <h2 id="modal-title" class="modal-title"></h2>
-                            </div>
-                            <div class="modal-meta">
-                                <div class="rating-container">
-                                    <i class="fas fa-star"></i>
-                                    <span id="modal-rating" class="rating-text"></span>
-                                </div>
-                                <span id="modal-year" class="year-text"></span>
-                                <span id="modal-type" class="type-badge"></span>
-                            </div>
-                            <div class="modal-genres" id="modal-genres"></div>
-
-                            <div class="modal-playback-controls" id="playback-controls">
-                                <div class="server-controls" id="server-controls">
-                                    <label for="server" class="server-label">
-                                        <i class="fas fa-server"></i> Server:
-                                    </label>
-                                   <select id="server" class="server-select">
-                                        <option value="vidsrc.cc">Server 1</option>
-                                        <option value="vidsrc.me">Server 2</option>
-                                        <option value="player.videasy.net">Server 3</option>
-                                        <option value="vidfast.pm">Server 4</option>
-                                        <option value="www.vidsrc.wtf">Server 5</option>
-                                    </select>
-                                </div>
-
-                                <div class="modal-tv-controls" id="modal-tv-controls">
-                                    <div class="tv-season-selector">
-                                        <label for="season-select" class="tv-select-label">Season:</label>
-                                        <select id="season-select" class="tv-select"></select>
-                                    </div>
-
-                                    <div class="tv-episode-list">
-                                        <h4 class="episodes-heading">Episodes</h4>
-                                        <div id="episode-list" class="episode-list-items">
-                                            <div class="episode-list-placeholder">Select a season to view episodes.</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p id="modal-description" class="modal-description"></p>
+                            <h3 class="details-section-title">Synopsis</h3>
+                            <p class="modal-description" id="modal-description">
+                                Loading...
+                            </p>
                         </div>
+                        
                     </div>
-                </div>
-            </div>
+                    
+                </div> </div> </div> 
         </div>
-    </div>
-
-    <div class="search-modal" id="search-modal">
-        <div class="search-modal-content">
-            <button class="search-close" onclick="closeSearchModal()">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="search-header">
-                <div class="search-input-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input 
-                        type="text" 
-                        id="search-input" 
-                        class="search-input"
-                        placeholder="Search for movies, TV shows, or anime..." 
-                        oninput="searchTMDB()" 
-                        autocomplete="off"
-                    />
-                </div>
-            </div>
-            <div class="search-results-container">
-                <div id="search-results" class="search-results"></div>
-                <div id="search-loading" class="search-loading" style="display: none;">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Searching...</p>
-                </div>
-                <div id="search-empty" class="search-empty" style="display: none;">
-                    <i class="fas fa-search"></i>
-                    <p>No results found</p>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 
     <footer class="footer">
         <div class="footer-content">
