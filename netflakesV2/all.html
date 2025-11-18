@@ -18,10 +18,10 @@
 
 <body>
     <div class="loading-screen" id="loading-screen">
-    <div class="loading-spinner"></div>
-</div>
+        <div class="loading-spinner"></div>
+    </div>
 
-<div class="cursor-trail" id="cursor-trail"></div>
+    <div class="cursor-trail" id="cursor-trail"></div>
     <nav class="navbar">
         <div class="navbar-container">
             <div class="logo">
@@ -44,7 +44,7 @@
                     <i class="fas fa-dragon"></i>
                     <span>Anime</span>
                 </a>
-                <a href="all.html?type=movie" class="nav-link"> <i class="fas fa-grip-horizontal"></i>
+                <a href="genres.html" class="nav-link"> <i class="fas fa-grip-horizontal"></i>
                     <span>Genres</span>
                 </a>
             </div>
@@ -93,7 +93,8 @@
                 <i class="fas fa-dragon"></i>
                 <span>Anime</span>
             </a>
-            <a href="all.html?type=movie" class="mobile-nav-link">
+            
+            <a href="genres.html" class="mobile-nav-link">
                 <i class="fas fa-grip-horizontal"></i>
                 <span>Genres</span>
             </a>
@@ -130,7 +131,9 @@
             </div>
 
         </section>
-    </div> <div class="modal" id="modal">
+    </div> 
+    
+    <div class="modal" id="modal">
         <div class="modal-backdrop" onclick="closeModal()"></div>
         <div class="modal-container" id="modal-container">
             <button class="modal-close" onclick="closeModal()">
@@ -170,12 +173,12 @@
                                         <i class="fas fa-server"></i> Server:
                                     </label>
                                    <select id="server" class="server-select">
-    <option value="vidsrc.cc">Server 1</option>
-    <option value="vidsrc.me">Server 2</option>
-    <option value="player.videasy.net">Server 3</option>
-    <option value="vidfast.pm">Server 4</option>
-    <option value="www.vidsrc.wtf">Server 5</option>
-</select>
+                                        <option value="vidsrc.cc">Server 1</option>
+                                        <option value="vidsrc.me">Server 2</option>
+                                        <option value="player.videasy.net">Server 3</option>
+                                        <option value="vidfast.pm">Server 4</option>
+                                        <option value="www.vidsrc.wtf">Server 5</option>
+                                    </select>
                                 </div>
 
                                 <div class="modal-tv-controls" id="modal-tv-controls">
@@ -263,9 +266,5 @@
         </div>
     </footer>
 
-    <div class="loading-screen" id="loading-screen">
-        <div class="loading-spinner"></div>
-    </div>
-    
-</body>
+    </body>
 </html>
