@@ -1491,7 +1491,9 @@ a {
     }
 }
 
-/* ==================== RESPONSIVE DESIGN (UPDATED) ==================== */
+/* ========================================================== */
+/* === BAGONG RESPONSIVE DESIGN (Mas Maluwag, Walang Tabs) === */
+/* ========================================================== */
 @media (max-width: 768px) {
     .navbar-container {
         padding: 0 20px;
@@ -1515,11 +1517,13 @@ a {
     }
 
     .hero-content {
-        padding: 0 20px 60px;
+        padding: 0 25px 60px;
+        /* Mas maluwag na side padding */
     }
 
     .hero-title {
-        font-size: 36px;
+        font-size: 38px;
+        /* Pinalaki pa */
     }
 
     .hero-title-logo {
@@ -1527,17 +1531,18 @@ a {
     }
 
     .hero-description {
-        font-size: 15px;
-        /* Pinalaki ng konti */
+        font-size: 16px;
+        /* Mas malaki at madaling basahin */
     }
 
     .content-wrapper {
-        padding: 40px 20px;
-        /* Dinagdagan ang vertical padding */
+        padding: 40px 25px;
+        /* Mas maluwag na side padding */
     }
 
     .row-title {
-        font-size: 22px;
+        font-size: 24px;
+        /* Pinalaki pa */
     }
 
     .carousel-btn {
@@ -1549,17 +1554,17 @@ a {
     }
 
     .media-card {
-        width: 160px;
-        /* Pinalaki ang cards (mula 150px) */
+        width: 170px;
+        /* Mas malaki para mas kita */
     }
 
     .media-card img {
-        height: 240px;
-        /* Pinalaki ang image (mula 225px) */
+        height: 255px;
+        /* 2:3 ratio */
     }
 
     .media-card-title {
-        font-size: 14px;
+        font-size: 15px;
     }
 
     .media-card-overlay {
@@ -1567,50 +1572,65 @@ a {
     }
 
     .modal-container {
-        width: 95%;
-        max-height: 95vh;
-        border-radius: 12px;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+        border-top: none;
     }
 
+    /* === BAGONG MODAL LAYOUT (Walang Tabs) === */
     .modal-info-header {
-        padding: 25px 20px 15px;
-        /* Dinagdagan ang top padding */
+        padding: 30px 25px 20px;
+        /* Malaking padding */
     }
 
     .modal-title {
-        font-size: 24px;
+        font-size: 26px;
+        /* Mas malaking title */
+    }
+
+    .modal-meta {
+        margin-bottom: 20px;
+        /* Mas malaking space */
     }
 
     .modal-tabs {
-        margin: 15px 20px 0;
-        /* Consistent side margin */
-        padding: 5px;
-    }
-
-    .modal-tab-btn {
-        font-size: 14px;
-        gap: 8px;
+        display: none;
+        /* TINANGGAL ANG TABS */
     }
 
     .modal-tab-content-container {
-        padding: 25px 20px;
-        /* Consistent padding */
+        padding: 0 25px 30px;
+        /* Inayos ang padding */
+    }
+
+    /* Pwersahing ipakita ang *lahat* ng content blocks */
+    .modal-tab-content {
+        display: block !important;
+        opacity: 1 !important;
+        animation: none !important;
+        margin-bottom: 30px;
+        /* Space sa pagitan ng "Play" at "Details" content */
     }
 
     .modal-description {
-        font-size: 15px;
-        /* Pinalaki ang font (mula 14px) */
-        line-height: 1.7;
+        font-size: 16px;
+        /* Mas malaking font */
+        line-height: 1.75;
     }
 
     .modal-details-layout {
         flex-direction: column;
-        gap: 20px;
+        gap: 25px;
+        /* Mas malaking space */
     }
 
     .modal-poster-col {
         width: 100%;
-        max-width: 250px;
+        max-width: 280px;
+        /* Pinalaki ang poster */
         margin: 0 auto;
     }
 
@@ -1632,7 +1652,7 @@ a {
         flex-direction: column;
     }
 
-    /* === UPDATED MOBILE FULLSCREEN (Easy Navigate) === */
+    /* Inayos na Fullscreen (Easy Navigate) */
     .modal-container.is-fullscreen-player {
         overflow: auto;
     }
@@ -1646,7 +1666,6 @@ a {
     }
 
     .modal-container.is-fullscreen-player .modal-player-area {
-        /* Mag-o-overlay ito */
         position: fixed;
         top: 0;
         left: 0;
@@ -1664,23 +1683,26 @@ a {
         bottom: auto;
     }
 
+    /* Dito nagtatapos ang Modal Fixes */
     .search-modal-content {
-        padding: 80px 20px 40px;
+        padding: 80px 25px 40px;
+        /* Mas maluwag */
     }
 
     .search-results {
-        /* GINAWANG 2 COLUMNS (mula 3) para mas malaki */
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        /* Mas malaki, 2 columns lang */
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 15px;
     }
 
     .search-results .media-card img {
-        height: 225px;
-        /* In-adjust para sa bagong width */
+        height: 240px;
+        /* 2:3 ratio */
     }
 
     .footer {
-        padding: 40px 20px 0;
+        padding: 40px 25px 0;
+        /* Mas maluwag */
     }
 
     .footer-content {
@@ -1701,13 +1723,20 @@ a {
     }
 }
 
+/* Para sa mas maliliit na phone */
 @media (max-width: 480px) {
     .logo-text {
         font-size: 22px;
     }
 
+    .hero-content {
+        padding: 0 20px 60px;
+        /* Balik sa 20px, sapat na */
+    }
+
     .hero-title {
-        font-size: 30px;
+        font-size: 32px;
+        /* Pinalaki pa rin */
     }
 
     .hero-title-logo {
@@ -1716,28 +1745,41 @@ a {
 
     .hero-description {
         font-size: 15px;
-        /* Pinalaki (mula 14px) */
+        /* Mas malaki */
     }
 
     .btn {
         padding: 12px 22px;
-        /* Pinalaki ang padding (mula 10px 20px) */
         font-size: 15px;
-        /* Pinalaki (mula 14px) */
+    }
+
+    .content-wrapper {
+        padding: 40px 20px;
+        /* Balik sa 20px */
     }
 
     .media-card {
-        width: 150px;
-        /* Pinalaki (mula 130px) */
+        width: 160px;
+        /* Mas malaki */
     }
 
     .media-card img {
-        height: 225px;
-        /* Pinalaki (mula 195px) */
+        height: 240px;
+        /* Mas malaki */
+    }
+
+    .modal-info-header {
+        padding: 25px 20px 15px;
+        /* Mas maluwag */
+    }
+
+    .modal-tab-content-container {
+        padding: 10px 20px 25px;
     }
 
     .modal-title {
-        font-size: 20px;
+        font-size: 24px;
+        /* Mas malaki */
     }
 
     .modal-title-logo {
@@ -1745,22 +1787,8 @@ a {
     }
 
     .modal-poster-col {
-        max-width: 200px;
-    }
-
-    .modal-info-header {
-        padding: 20px 20px 15px;
-        /* Pinalaki ang padding (mula 15px) */
-    }
-
-    .modal-tab-content-container {
-        padding: 20px;
-        /* Pinalaki (mula 15px) */
-    }
-
-    .modal-tabs {
-        margin: 15px 20px 0;
-        /* Consistent side margin */
+        max-width: 250px;
+        /* Pinalaki */
     }
 
     .modal-playback-controls {
@@ -1784,9 +1812,18 @@ a {
         max-width: none;
     }
 
+    .search-modal-content {
+        padding: 80px 20px 40px;
+    }
+
     .search-results {
-        /* Mananatiling 2 columns, na saktong-sakto (mula sa 768px block) */
+        /* 2 columns pa rin, mas malaki */
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px;
+    }
+
+    .search-results .media-card img {
+        height: 225px;
     }
 
     .search-input {
@@ -1796,6 +1833,10 @@ a {
 
     .search-icon {
         left: 15px;
+    }
+
+    .footer {
+        padding: 40px 20px 0;
     }
 }
 
