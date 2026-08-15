@@ -9,7 +9,7 @@ const CONFIG = {
     'player.videasy.net': 'https://player.videasy.net',
     'vidfast.pm': 'https://vidfast.pm',
     'www.vidsrc.wtf': 'https://vidsrc.wtf/api/1',
-    'spencerdevs.xyz': 'https://spencerdevs.xyz'
+    'www.superembed.stream/': 'https://www.superembed.stream/'
   }
 };
 
