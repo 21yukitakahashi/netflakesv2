@@ -496,7 +496,7 @@ function changeServer() {
         // Server 2: vidsrc.me (Gumagamit ng TMDB ID + ?tmdb=)
         embedURL = `${baseURL}/${type}/?tmdb=${tmdbId}`; 
     }
-    else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'spencerdevs.xyz') { 
+    else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'superembed.stream') { 
         // Server 3, 4, & 6: (Gumagamit ng TMDB ID, walang /embed/)
         embedURL = `${baseURL}/${type}/${tmdbId}`; 
     }
@@ -521,7 +521,7 @@ function changeServer() {
       else if (server === 'vidsrc.me') { 
         embedURL = `${baseURL}/${type}/?tmdb=${tmdbId}`; 
       }
-      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'spencerdevs.xyz') { 
+      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'superembed.stream') { 
         embedURL = `${baseURL}/${type}/${tmdbId}`; 
       }
       else if (server === 'www.vidsrc.wtf') {
@@ -536,7 +536,7 @@ function changeServer() {
       else if (server === 'vidsrc.me') { 
           embedURL = `${baseURL}/${type}/?tmdb=${tmdbId}&s=${season}&e=${episode}`; 
       }
-      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'spencerdevs.xyz') { 
+      else if (server === 'player.videasy.net' || server === 'vidfast.pm' || server === 'superembed.stream') { 
           embedURL = `${baseURL}/${type}/${tmdbId}/${season}/${episode}`; 
       }
       else if (server === 'www.vidsrc.wtf') {
